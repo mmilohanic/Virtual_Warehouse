@@ -1,0 +1,15 @@
+body {
+    padding-bottom: 50px;
+}
+
+td {
+    white-space: pre;
+}
+
+#sadrzaj {
+    background-color: lightgray;
+}
+
+#div_tablice {
+    height: 50px;
+}

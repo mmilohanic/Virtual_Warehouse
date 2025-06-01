@@ -1,0 +1,38 @@
+<!-- Modal s formom za unos novog artikla -->
+<div id="modal_form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border border-primary border-1">
+      <div class="modal-header">
+          <h4 class="modal-title text-dark" data-index="0" id="modal_title">Unos novog artikla</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="forma">
+        <div class="modal-body text-dark">
+          <div class="d-flex justify-content-between my-2">
+            <label for="naziv" class="form-label pt-2">Naziv artikla:</label>
+            <input id="naziv" name="naziv" class="form-control w-75" type="text" placeholder="Unesite naziv artikla..." required>
+          </div>
+          <div class="d-flex justify-content-between my-2">
+            <label for="opis" class="form-label pt-2">Opis artikla:</label>
+            <textarea  id="opis" name="opis" class="form-control w-75" type="text" placeholder="Unesite opis artikla..." required></textarea>
+          </div>
+          <div class="d-flex justify-content-between my-2">
+            <label for="cijena" class="form-label pt-2" title="Cijena artikla kojeg se unosi na skladište.">Cijena:</label>
+            <input id="cijena" name="cijena" class="form-control w-50" type="number" min="0.001" step="0.001" value="0" required>
+          </div>
+          <div class="d-flex justify-content-between my-2">
+            <label for="dostupna_kolicina" class="form-label pt-2" title="Količina artikla kojeg se unosi na skladište.">Količina:</label>
+            <input id="dostupna_kolicina" name="dostupna_kolicina" class="form-control w-50" type="number" min="0.001" step="0.001" value="0" required>
+          </div>
+          <div class="d-flex justify-content-between my-2">
+            <label for="minimalna_kolicina" class="form-label pt-2" title="Količina na kojoj se šalje obavijest o skorom isteku zaliha.">Minimalna količina:</label>
+            <input id="minimalna_kolicina" name="minimalna_kolicina" class="form-control w-50" type="number" min="0.001" step="0.001" value="0" required>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+            <input id="submit" class="btn btn-outline-primary w-50" type="submit" value="Dodaj artikl">
+        </div>
+        </div>
+      </form>
+    </div>
+</div>

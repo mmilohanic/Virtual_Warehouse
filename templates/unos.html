@@ -1,0 +1,32 @@
+{% extends "base.html" %} 
+
+{% block content %}
+<div id="div_tablice" class="border bg-secondary text-warning border-dark border-2 rounded-top-4 d-flex justify-content-between align-items-center">
+  <!-- Gumb za modal -->
+  <button class="btn btn-outline-warning my-1 ms-3" type="button" data-bs-toggle="modal" data-bs-target="#modal_form">Novi artikl</button>
+
+  {{ modal | safe }}
+  
+  <!-- Gumb za spremanje -->
+  <button id="spremi" class="btn btn-outline-warning my-1 mx-3" type="submit" style="display: none;" onclick="pohrani()">Spremi artikle</button>
+</div>
+<!-- Tablica s novim artiklima -->
+<div class="border border-dark border-2 border-top-0">
+  <table id="tablica" class="table table-striped table-bordered mb-0">
+    <thead>
+      <tr>
+        <th scope="col" style="width: 5%;">#</th>
+        <th scope="col" style="width: 20%;">Naziv</th>
+        <th scope="col" style="width: 30%;">Opis</th>
+        <th scope="col" style="width: 10%;">Cijena (€)</th>
+        <th scope="col" style="width: 10%;">Količina</th>
+        <th scope="col" style="width: 20%;">Minimalna količina</th>
+        <th scope="col" style="width: 5%;">Obriši</th>
+      </tr>
+    </thead>
+    <tbody id="unosi" class="table-group-divider">
+    </tbody>
+  </table>
+  <div id="prazno" class="d-flex justify-content-center bg-white py-2 fs-5">Nema novih unosa</div>
+</div>
+{% endblock %}

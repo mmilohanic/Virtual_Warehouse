@@ -1,0 +1,147 @@
+{% extends "base.html" %} 
+
+{% block content %}
+<div id="div_tablice" class="border bg-secondary text-warning border-dark border-2 rounded-top-4 d-flex justify-content-between align-items-center">
+    <div class="d-flex">
+		<p class="px-3 pt-3 fs-4">Popis artikala</p>
+		<a id="download" class="icon-link" href="javascript:download()"><i  class="bi bi-download text-warning fs-4 mb-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Preuzmi popis"></i></a>
+	</div>
+    <div class="d-flex">
+        <!-- Gumbovi za poništavanje i spremanje izmjena (edit-a i delete-a), skriveni dok se ne dogodi izmjena -->
+        <button id="spremi" class="btn btn-outline-warning me-2" type="button" onclick="pohrani()" style="display: none;"><i class="bi bi-floppy me-2"></i>Spremi promjene</button>
+		<button id="ponisti" class="btn btn-outline-warning me-3" type="button" onclick="reset_tablice()" style="display: none;"><i class="bi bi-x-circle me-2"></i>Poništi promjene</button>
+
+        <!-- Gumb za modal -->
+        <button id="filtriraj" class="btn btn-outline-warning" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-funnel"></i></button>
+
+        <!-- Filter modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="staticBackdropLabel">Filtriraj artikle</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="filter_forma" action="{{url_for('filtriranje')}}" method="GET">
+                         <div class="modal-body text-dark py-4 px-5">
+                            <div class="d-flex justify-content-between py-2 px-4">
+                                <label class="form-label pt-2 fs-5">Količina :</label>
+                                <input id="min_kolicina" name="min_kolicina" min="0.001" step="0.001" class="form-control w-25" type="number" placeholder="Min">
+                                <p class="pt-2">—</p>
+                                <input id="max_kolicina" name="max_kolicina" min="0.001" step="0.001" class="form-control w-25" type="number" placeholder="Max"> 
+                            </div>
+                            <div class="d-flex justify-content-between py-2 px-4">
+                                <label class="form-label pt-2 fs-5">Cijena :    &nbsp;&nbsp;</label>
+                                <input id="min_cijena" name="min_cijena" min="0.001" step="0.001" class="form-control w-25" type="number" placeholder="Min">
+                                <p class="pt-2">—</p>
+                                <input id="max_cijena" name="max_cijena" min="0.001" step="0.001" class="form-control w-25" type="number" placeholder="Max"> 
+                            </div>
+                            <div class="d-flex justify-content-between py-2 px-4">
+                                <label class="form-label pt-2 fs-5">Datum unosa :</label>
+                                <select id="god_dodavanja" name="god_dodavanja" class="form-select w-50" aria-label="Default select example">
+                                    <option selected>Svi</option>
+                                    <option value="1">prije jednu godinu</option>
+                                    <option value="2">prije dvije godine</option>
+                                    <option value="3">prije tri godine</option>
+                                    <option value="4">prije četiri godine</option>
+                                    <option value="5">prije pet godine</option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between py-2 px-4">
+                                <label class="form-label pt-2 fs-5">Datum izmjene :</label>
+                                <select id="god_izmjene" name="god_izmjene" class="form-select w-50" aria-label="Default select example">
+                                    <option selected>Svi</option>
+                                    <option value="1">prije jednu godinu</option>
+                                    <option value="2">prije dvije godine</option>
+                                    <option value="3">prije tri godine</option>
+                                    <option value="4">prije četiri godine</option>
+                                    <option value="5">prije pet godine</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+                            <input class="btn btn-outline-primary" type="submit" value="Filtriraj">
+                        </div>
+                    </form>
+                  </div>
+            </div>
+        </div>
+    
+
+        <!-- Dropdown izbornik -->
+        <div class="dropdown-center">
+            <button id="sortiraj" class="btn btn-outline-warning ms-1 me-3 px-4 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sortiraj </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="{{url_for('sortiranje', value='cijena', order='asc')}}"><i class="bi bi-sort-down-alt"></i> Cijena</a></li>
+                <li><a class="dropdown-item" href="{{url_for('sortiranje', value='cijena', order='desc')}}"><i class="bi bi-sort-down"></i> Cijena</a></li>
+                <li><a class="dropdown-item" href="{{url_for('sortiranje', value='dostupna_kolicina', order='asc')}}"><i class="bi bi-sort-down-alt"></i> Količina</a></li>
+                <li><a class="dropdown-item" href="{{url_for('sortiranje', value='dostupna_kolicina', order='desc')}}"><i class="bi bi-sort-down"></i> Količina</a></li>
+                <li><a class="dropdown-item" href="{{url_for('sortiranje', value='datum_dodavanja', order='asc')}}"><i class="bi bi-sort-down-alt"></i> Datum unosa </a></li>
+                <li><a class="dropdown-item" href="{{url_for('sortiranje', value='datum_dodavanja', order='desc')}}"><i class="bi bi-sort-down"></i> Datum unosa </a></li>
+				<li><a class="dropdown-item" href="{{url_for('sortiranje', value='datum_izmjene', order='asc')}}"><i class="bi bi-sort-down-alt"></i> Datum izmjene </a></li>
+                <li><a class="dropdown-item" href="{{url_for('sortiranje', value='datum_izmjene', order='desc')}}"><i class="bi bi-sort-down"></i> Datum izmjene </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Tablica -->
+<div class="border border-dark border-2 border-top-0">
+    {% if artikli -%}
+    <table class="table table-striped table-bordered mb-0">
+        <thead>
+          	<tr>
+            	<th scope="col">#</th>
+            	<th scope="col">Naziv</th>
+            	<th scope="col">Količina</th>
+            	<th scope="col">Cijena (€)</th>
+            	<th scope="col">Datum unosa</th>
+            	<th scope="col">Zadnje izmjena</th>
+            	<th scope="col" style="width: 0;">Akcije</th>
+          	</tr>
+        </thead>
+        <tbody id="skladiste" class="table-group-divider">
+          	{% for artikl in artikli -%}
+          	<tr id="{{ artikl.id }}">
+    			<td scope="row">{{ loop.index }}</td>
+    			<td>{{ artikl.naziv }}</td>
+    			<td>{{ artikl.dostupna_kolicina }}</td>
+    			<td>{{ artikl.cijena }}</td>
+    			<td>{{ artikl.datum_dodavanja }}</td>
+    			<td>{{ artikl.datum_izmjene }}</td>
+    			<td class="d-flex">
+    				<a class="icon-link info_button" data-index="{{ artikl.id }}" href="#"><i class="bi bi-eye mx-2 mb-2 text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Pregledaj"></i></a>
+    				<a class="icon-link edit_button" data-index="{{ artikl.id }}" href="#"><i class="bi bi-pencil-square mx-2 mb-2 text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Uredi"></i></a>
+    				<a class="icon-link delete_button" data-index="{{ artikl.id }}" href="#"><i class="bi bi-trash mx-2 mb-2 text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Obriši"></i></a>
+    			</td>
+          	</tr>
+          	{% endfor %}
+      	</tbody>
+    </table>
+    {% else -%}
+    <div id="nema_artikala" class="d-flex justify-content-center bg-white py-3 fs-5">Na skladištu nema unesenih artikala.</div>
+    {% endif %}
+</div>
+
+<!-- Info modal -->
+<div id="info_modal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="info_title" class="modal-title"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div id="info_body" class="modal-body m-3">
+        </div>
+      </div>
+    </div>
+</div>
+{{ modal | safe }}
+{% endblock %}
+
+{% block scripts %}
+<script type="application/json" id="artikli">
+    {{ artikli | tojson | safe }}
+</script>
+{% endblock %}
