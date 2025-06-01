@@ -26,9 +26,9 @@ docker run -p 5003:5003 vwhouse
 Potom aplikaciju možete pokrenuti na linkovima danim u terminalu.
 
 ## Korištene tehnologije
-- Python (Flask)
+- Python
 - HTML
 - CSS
-- JavaScript (Bootstrap)
-- SQLite3 (SQLAlchemy)
+- JavaScript
+- SQLite3
 - Docker
