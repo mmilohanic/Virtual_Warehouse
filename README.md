@@ -10,14 +10,14 @@ Aplikacija omogućuje korisniku unos, čitanje, izmjenu, brisanje, filtriranje, 
 ## Use Case dijagram
 ![IS_Use_Case_Virtual_Warehouse](https://github.com/MMFipu/Virtual_Warehouse/blob/main/Virtual_Warehouse_Use_Case_IS.png)
 
-# Preuzimanje, instalacija i pokretanje
-## Preuzimanje
+## Preuzimanje, instalacija i pokretanje
+### Preuzimanje
 Nakon što imate preuzet ```Docker```, pozicionirajte se u direktorij u koji želite preuzeti projekt, otvorite terminal u tom direktoriju i izvršite sljedeće naredbe:
 ```bash
 git clone https://github.com/MMFipu/Virtual_Warehouse.git
 cd Virtual_Warehouse
 ```
-## Instalacija i pokretanje
+### Instalacija i pokretanje
 Unutar terminala izvršite sljedeće naredbe:
 ```bash
 docker build --tag vwhouse .
